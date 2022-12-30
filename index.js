@@ -1,20 +1,24 @@
 const express = require("express");
-const app = express();
+const app = express()
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 app.use(cors());
 
+const PORT = process.env.PORT || 3001
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://montachat.netlify.app",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
 
 const availableRooms = []
+
+
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
@@ -74,6 +78,6 @@ io.on("connection", (socket) => {
   io.sockets.emit("available_rooms", availableRooms)
 });
 
-server.listen(3001, () => {
-  console.log("SERVER RUNNING");
-});
+server.listen(PORT, () => {
+  console.log("yo")
+})
